@@ -2,11 +2,14 @@ require("dotenv").config();
 const express = require("express");
 
 
+const {query, killConnection} = require("./services/database.js")
+
 const app = express();
 const PORT= process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
-  res.send("Hello I'm fahim ")
+app.get("/", async (req, res) => {
+  const data = await query("select * from user");
+  res.json(data)
 })
 
 app.listen(PORT, () => {
