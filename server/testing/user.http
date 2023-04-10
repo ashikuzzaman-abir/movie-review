@@ -1,0 +1,31 @@
+GET http://localhost:5000/
+Content-Type: application/json
+
+###
+GET http://localhost:5000/user/
+Content-Type: application/json
+
+###
+POST  http://localhost:5000/user/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName": "Fahim",
+  "lastName": "Dork",
+  "userName": "commondork",
+  "email": "dorkfahim@pussy.com",
+  "password": "12341234"
+}
+
+###
+POST  http://localhost:5000/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "userName": "commondork",
+  "password": "12341234"
+}
+
+###
+GET http://localhost:5000/user/logout HTTP/1.1
+Content-Type: application/json
