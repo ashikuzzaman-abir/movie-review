@@ -25,7 +25,7 @@ app.get("/", async (req, res) => {
   res.send("Movie Review api working!")
 })
 app.use("/user", userRoute);
-app.use("/movie", auth, movieRoute);
+app.use("/movie", movieRoute);
 
 
 
