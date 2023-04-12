@@ -4,7 +4,7 @@ const config = require("../lib/config");
 const axios = require("axios");
 const { query, killConnection } = require("../services/database");
 
-const { root: movieUrl, apiKey } = config.moviesAPI;
+const { root: movieUrl, apiKey, search } = config.moviesAPI;
 
 // Router.get("/", auth, (req, res) => {
 //   res.json({
@@ -38,6 +38,39 @@ Router.get("/top-rated", async (req, res) => {
 		// console.log(movies);
 	} catch (err) {
 		console.log(err);
+	}
+});
+//search
+Router.get("/search", async (req, res) => {
+	try {
+		const qry = req.query.query;
+		const page = req.query.page;
+		if (qry) {
+			console.log(qry);
+			const searchResult = await axios.get(
+				`${search}?query=${encodeURIComponent(qry)}&api_key=${apiKey}&page=${ page ? page: 1}`
+			);
+			// console.log(searchResult);
+			if (searchResult.statusText === "OK") {
+				res.json({
+					status: 200,
+					page: searchResult.data.page,
+					data: searchResult.data.results,
+				});
+			} else {
+				res.json({
+					status: 500,
+					message: "search error",
+				});
+			}
+		} else {
+			res.json({
+				status: 400,
+				message: "No search query has been given",
+			});
+		}
+	} catch (error) {
+		console.log(error);
 	}
 });
 
@@ -87,17 +120,17 @@ Router.post("/:id", auth, async (req, res) => {
       insert into reviews (userId, rating , comment, movieId) values ('${userId}', '${rate}', '${comment}' , '${movieId}')
     `);
 
-    if(serverReturn){
-      res.json({
-        status: 200,
-        message: `movie ${movieId} is rated ${rate} by userID ${userId}`
-      })
-    } else {
-      res.json({
-        status: 500,
-        message: "internal server error"
-      })
-    }
+			if (serverReturn) {
+				res.json({
+					status: 200,
+					message: `movie ${movieId} is rated ${rate} by userID ${userId}`,
+				});
+			} else {
+				res.json({
+					status: 500,
+					message: "internal server error",
+				});
+			}
 		}
 	} catch (err) {
 		console.log(err);

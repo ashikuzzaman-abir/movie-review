@@ -16,3 +16,7 @@ Content-Type: application/json
   "rate" : 4.0,
   "comment": "Fahim fucking dork rated"
 }
+
+###
+GET http://localhost:5000/movie/search?query=batman&page=2 HTTP/1.1
+Content-Type: application/json

@@ -3,6 +3,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const auth = require("./middleware/auth");
 
@@ -19,6 +20,9 @@ app.use(morgan());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors({
+	credentials: true
+}));
 
 app.get("/", async (req, res) => {
 	res.send("Movie Review api working!");
